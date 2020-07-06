@@ -8,6 +8,7 @@ resources/__pycache__
 *.so
 
 # Distribution / packaging
+resources/questions.csv
 .Python
 .idea
 venv
