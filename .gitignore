@@ -9,6 +9,7 @@ resources/__pycache__
 
 # Distribution / packaging
 resources/questions.csv
+resources/have_passed.csv
 .Python
 .idea
 venv
