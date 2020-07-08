@@ -1,7 +1,7 @@
 class CsvHelper:
     @staticmethod
     def read_questions(path: str) -> list:
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding='utf-8') as file:
             questions = file.read()
             if questions:
                 return questions.split(';')
@@ -10,7 +10,7 @@ class CsvHelper:
 
     @staticmethod
     def read_have_passed(path: str) -> list:
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding='utf-8') as file:
             have_passed = file.read()
             if have_passed:
                 have_passed = have_passed.split(';')
@@ -22,7 +22,7 @@ class CsvHelper:
 
     @staticmethod
     def write_user_have_passed(peer_id: str, path: str) -> None:
-        with open(path, 'a') as file:
+        with open(path, 'a', encoding='utf-8') as file:
             file.write(f'{peer_id};')
 
     @staticmethod
@@ -30,5 +30,5 @@ class CsvHelper:
         have_passed = CsvHelper.read_have_passed(path)
         have_passed.remove(peer_id)
         have_passed.append('')
-        with open(path, 'w') as file:
+        with open(path, 'w', encoding='utf-8') as file:
             file.write(';'.join(have_passed))
