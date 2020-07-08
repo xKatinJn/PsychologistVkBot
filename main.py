@@ -66,7 +66,8 @@ if __name__ == '__main__':
                                        schizophrenia_answer_keyboard,
                                        event)
 
-            elif event.obj.text.lower() == 'пройти еще раз':
+            elif event.obj.text.lower() == 'пройти еще раз' \
+                    and (str(event.obj.peer_id) in users_progress['have_passed']):
                 CsvHelper.delete_user_from_have_passed(str(event.obj.peer_id), HAVE_PASSED_PATH)
                 users_progress['have_passed'] = CsvHelper.read_have_passed(HAVE_PASSED_PATH)
                 users_progress[str(event.obj.peer_id)] = {
