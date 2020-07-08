@@ -40,7 +40,11 @@ if __name__ == '__main__':
                     'no_answers': 0,
                     'previous_answers': []  # True if yes False if no
                 }
-                Replies.reply_template(vk, questions[0], schizophrenia_answer_keyboard, event)
+                user = users_progress[str(event.obj.peer_id)]
+                Replies.reply_template(vk, questions[0] +\
+                                       f' ({user["question_number"] + 1}/{len(questions)})',
+                                       schizophrenia_answer_keyboard,
+                                       event)
 
             elif (str(event.obj.peer_id) not in users_progress.keys()) \
                     and (str(event.obj.peer_id) not in users_progress['have_passed']):
@@ -56,7 +60,11 @@ if __name__ == '__main__':
                     else:
                         user['no_answers'] -= 1
                     user['question_number'] -= 1
-                Replies.reply_template(vk, questions[user['question_number']], schizophrenia_answer_keyboard, event)
+                Replies.reply_template(vk,
+                                       questions[user['question_number']] +\
+                                       f' ({user["question_number"] + 1}/{len(questions)})',
+                                       schizophrenia_answer_keyboard,
+                                       event)
 
             elif event.obj.text.lower() == 'пройти еще раз':
                 CsvHelper.delete_user_from_have_passed(str(event.obj.peer_id), HAVE_PASSED_PATH)
@@ -67,7 +75,11 @@ if __name__ == '__main__':
                     'no_answers': 0,
                     'previous_answers': []  # True if yes False if no
                 }
-                Replies.reply_template(vk, questions[0], schizophrenia_answer_keyboard, event)
+                user = users_progress[str(event.obj.peer_id)]
+                Replies.reply_template(vk, questions[0] + \
+                                       f' ({user["question_number"] + 1}/{len(questions)})',
+                                       schizophrenia_answer_keyboard,
+                                       event)
 
             elif str(event.object.peer_id) in users_progress.keys():
                 user = users_progress[str(event.object.peer_id)]
@@ -81,16 +93,22 @@ if __name__ == '__main__':
                     user['question_number'] += 1
 
                 if user['question_number'] < len(questions):
-                    Replies.reply_template(vk, questions[user['question_number']], schizophrenia_answer_keyboard, event)
+                    Replies.reply_template(vk,
+                                           questions[user['question_number']] +\
+                                           f' ({user["question_number"]+1}/{len(questions)})',
+                                           schizophrenia_answer_keyboard,
+                                           event)
                 else:
                     if 30 <= user['yes_answers'] <= 35:
                         Replies.reply_template_with_photo(vk, None, None, event, upload, schizophrenia_answer_yes_path)
                     elif 26 <= user['yes_answers'] <= 29:
-                        Replies.reply_template_with_photo(vk, None, None, event, upload, schizophrenia_answer_almost_yes_path)
+                        Replies.reply_template_with_photo(vk, None, None, event, upload,
+                                                          schizophrenia_answer_almost_yes_path)
                     elif 25 <= user['no_answers'] <= 35:
                         Replies.reply_template_with_photo(vk, None, None, event, upload, schizophrenia_answer_no_path)
                     else:
-                        Replies.reply_template_with_photo(vk, None, None, event, upload, schizophrenia_answer_almost_no_path)
+                        Replies.reply_template_with_photo(vk, None, None, event, upload,
+                                                          schizophrenia_answer_almost_no_path)
                     user['yes_answers'], user['no_answers'] = 0, 0
                     user['question_number'] = -1
                     CsvHelper.write_user_have_passed(str(event.obj.peer_id), HAVE_PASSED_PATH)
