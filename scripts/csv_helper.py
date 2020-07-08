@@ -14,7 +14,8 @@ class CsvHelper:
             have_passed = file.read()
             if have_passed:
                 have_passed = have_passed.split(';')
-                have_passed.remove('')
+                if '' in have_passed:
+                    have_passed.remove('')
                 return have_passed
             else:
                 return []
@@ -23,3 +24,11 @@ class CsvHelper:
     def write_user_have_passed(peer_id: str, path: str) -> None:
         with open(path, 'a') as file:
             file.write(f'{peer_id};')
+
+    @staticmethod
+    def delete_user_from_have_passed(peer_id: str, path: str) -> None:
+        have_passed = CsvHelper.read_have_passed(path)
+        have_passed.remove(peer_id)
+        have_passed.append('')
+        with open(path, 'w') as file:
+            file.write(';'.join(have_passed))
